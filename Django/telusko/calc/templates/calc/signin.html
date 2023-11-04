@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Sign In</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                background-color: #f2f2f2;
+            }
+
+            .container {
+                max-width: 400px;
+                margin: 0 auto;
+                padding: 20px;
+                background-color: #ffffff;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            }
+            .signin{
+                display: flex;
+            }
+            .signin a{
+                margin-left: 10px;
+                color: #fff;
+                text-decoration: none;
+            }
+            .outerbox{
+                color: #fff;
+                width: 400px;
+                aspect-ratio: 1.5;
+                border-radius: 10px;
+                background: linear-gradient(45deg, #260d0d, #140a23);
+                position: absolute;
+                top: 25%;
+                left: 65%;
+                transform: translate(-50%, -50%);
+                box-shadow: inset 1px 1px 5px 0px rgba(255, 255, 255, 0.7) 3px 3px;
+            }
+            .second-outerbox {
+                color: #fff;
+                width: 400px;
+                aspect-ratio: 1.5;
+                border-radius: 10px;
+                background: linear-gradient(45deg, #260d0d, #140a23);
+                position: absolute;
+                top: 50%;
+                left: 20%;
+                transform: translate(-50%, -50%);
+                box-shadow: inset 1px 1px 5px 0px rgba(255, 255, 255, 0.7) 3px 3px;
+            }
+            .third-outerbox {
+                color: #fff;
+                width: 400px;
+                aspect-ratio: 1.5;
+                border-radius: 10px;
+                background: linear-gradient(45deg, #260d0d, #140a23);
+                position: absolute;
+                top: 75%;
+                left: 65%;
+                transform: translate(-50%, -50%);
+                box-shadow: inset 1px 1px 5px 0px rgba(255, 255, 255, 0.7) 3px 3px;
+            }
+            .greetings{
+                text-align: center;
+                font-size: 22px;
+                font-weight: 600;
+                margin-bottom: 20px;
+            }
+            .box-one{
+                position: relative;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%,-50%);
+                width: 80%;
+                height: 90%;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+
+            }
+            html,
+            body {
+                height: 100%;
+                max-width: 100%;
+                margin: 0;
+                overflow: hidden;
+                background: rgba(0, 10, 20, 1) url(https://i.imgur.com/r838U7u.jpg) center
+                    no-repeat;
+                background-size: cover;
+                image-rendering: pixelated;
+                font-family: sans-serif;
+            }
+            #space {
+                width: 100%;
+            }
+            #warp {
+                position: absolute;
+                z-index: 9;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                margin: 20px auto;
+                color: rgba(209, 255, 255, 1);
+                border: 2px solid;
+                padding: 1em;
+                width: 10em;
+                text-align: center;
+                font-weight: 700;
+                font-size: 1.2em;
+                display: inline-block;
+                text-decoration: none;
+                background: rgba(0, 0, 0, 0.8);
+            }
+
+            /* follow me @nodws */
+            nav {
+                z-index: 5;
+            }
+
+            #warp {
+                display: none;
+            }
+            #recognized-user-info {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center; 
+                padding: 10px;  
+                height: 100%;            
+            }
+
+            #recognized-user-info p {
+                font-size: 16px;
+                margin: 0; 
+            }
+
+        </style>
+        <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9"
+            crossorigin="anonymous"
+        />
+    </head>
+    <body>
+        <div class="effect">
+            <div id="w">
+                <canvas id="space"></canvas>
+                <a href="#" id="warp"></a>
+            </div>
+
+            <a href="https://twitter.com/nodws" id="btn-twtr" target="_b"
+                >Follow me on Twitter</a>
+        </div>
+        <div class="container-fluid">
+            <div class="signin">
+                <div class="outerbox">
+                    <div class="box-one">
+                        <div class="greetings">
+                            <p>Welcome User..!</p>
+                            <p>Click the button to recognise you</p>
+                        </div>
+                        <form method="post" action="{% url 'recognize_user' %}">
+                            {% csrf_token %}
+                            <button type="id" class="btn btn-primary btn-recognise" id="capture-button">Recognize You</button>
+                        </form>
+                    </div>
+                </div>
+                <div class="second-outerbox">
+                        <video id="video" width="400" height="266.67" autoplay></video>
+                        <canvas id="capture-canvas" style="display: none;"></canvas>
+                </div>
+                <div class="third-outerbox">
+                    <div id="recognized-user-info">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script
+            src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+            integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+            crossorigin="anonymous"
+        ></script>
+        <script
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.min.js"
+            integrity="sha384-Rx+T1VzGupg4BHQYs2gCW9It+akI2MM/mndMCy36UVfodzcJcF0GGLxZIzObiEfa"
+            crossorigin="anonymous"
+        ></script>
+        <script>
+            window.requestAnimFrame = (function () {
+                return window.requestAnimationFrame;
+            })();
+            var canvas = document.getElementById("space");
+            var c = canvas.getContext("2d");
+
+            var numStars = 1900;
+            var radius = "0." + Math.floor(Math.random() * 9) + 1;
+            var focalLength = canvas.width * 2;
+            var warp = 0;
+            var centerX, centerY;
+
+            var stars = [],
+                star;
+            var i;
+
+            var animate = true;
+
+            initializeStars();
+
+            function executeFrame() {
+                if (animate) requestAnimFrame(executeFrame);
+                moveStars();
+                drawStars();
+            }
+
+            function initializeStars() {
+                centerX = canvas.width / 2;
+                centerY = canvas.height / 2;
+
+                stars = [];
+                for (i = 0; i < numStars; i++) {
+                    star = {
+                        x: Math.random() * canvas.width,
+                        y: Math.random() * canvas.height,
+                        z: Math.random() * canvas.width,
+                        o: "0." + Math.floor(Math.random() * 99) + 1,
+                    };
+                    stars.push(star);
+                }
+            }
+
+            function moveStars() {
+                for (i = 0; i < numStars; i++) {
+                    star = stars[i];
+                    star.z--;
+
+                    if (star.z <= 0) {
+                        star.z = canvas.width;
+                    }
+                }
+            }
+
+            function drawStars() {
+                var pixelX, pixelY, pixelRadius;
+
+                if (
+                    canvas.width != window.innerWidth ||
+                    canvas.width != window.innerWidth
+                ) {
+                    canvas.width = window.innerWidth;
+                    canvas.height = window.innerHeight;
+                    initializeStars();
+                }
+                if (warp == 0) {
+                    c.fillStyle = "rgba(0,10,20,1)";
+                    c.fillRect(0, 0, canvas.width, canvas.height);
+                }
+                c.fillStyle = "rgba(209, 255, 255, " + radius + ")";
+                for (i = 0; i < numStars; i++) {
+                    star = stars[i];
+
+                    pixelX = (star.x - centerX) * (focalLength / star.z);
+                    pixelX += centerX;
+                    pixelY = (star.y - centerY) * (focalLength / star.z);
+                    pixelY += centerY;
+                    pixelRadius = 1 * (focalLength / star.z);
+
+                    c.fillRect(pixelX, pixelY, pixelRadius, pixelRadius);
+                    c.fillStyle = "rgba(209, 255, 255, " + star.o + ")";
+                }
+            }
+
+            document
+                .getElementById("warp")
+                .addEventListener("click", function (e) {
+                    window.warp = window.warp == 1 ? 0 : 1;
+                    window.c.clearRect(
+                        0,
+                        0,
+                        window.canvas.width,
+                        window.canvas.height
+                    );
+                    executeFrame();
+                });
+
+            executeFrame();
+        </script>
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                document.querySelector("form").addEventListener("submit", function (e) {
+                    e.preventDefault();
+                    const formData = new FormData(this);
+                    fetch("{% url 'recognize_user' %}", { 
+                        method: "POST",
+                        body: formData,
+                    })
+                    .then((response) => response.json())
+                    .then((data) => {
+                        if (data.success) {
+                            document.getElementById("recognized-user-info").innerHTML = `
+                                <p style="color: white;">${data.message}</p>
+                            `;
+                        } else {
+                            document.getElementById("recognized-user-info").innerHTML = `
+                                <p style="color: white;">${data.message}</p>
+                            `;
+                        }
+                    })
+                    .catch((error) => {
+                        console.error("Error:", error);
+                    });
+                });
+            });
+        </script>
+        <script>
+            const video = document.getElementById('video');
+            const captureCanvas = document.getElementById('capture-canvas');
+            const captureButton = document.getElementById('capture-button');
+            if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                navigator.mediaDevices.getUserMedia({ video: true })
+                    .then(function (stream) {
+                        video.srcObject = stream;
+                    })
+                    .catch(function (error) {
+                        console.error('Error accessing webcam:', error);
+                    });
+            } else {
+                console.error('getUserMedia is not supported in this browser');
+            }
+
+            // const video = document.getElementById('video');
+            // const captureCanvas = document.getElementById('capture-canvas');
+            // const captureButton = document.getElementById('capture-button');
+
+            // if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+            //     navigator.mediaDevices.enumerateDevices()
+            //         .then(function (devices) {
+            //             const externalWebcam = devices.find(function (device) {
+            //                 return device.kind === 'videoinput' && device.label === 'Logi C270 HD WebCam';
+            //             });
+
+            //             if (externalWebcam) {
+            //                 navigator.mediaDevices.getUserMedia({ video: { deviceId: { exact: externalWebcam.deviceId } } })
+            //                     .then(function (stream) {
+            //                         video.srcObject = stream;
+            //                     })
+            //                     .catch(function (error) {
+            //                         console.error('Error accessing external webcam:', error);
+            //                     });
+            //             } else {
+            //                 console.error('External webcam "Logi C270 HD WebCam" not found.');
+            //             }
+            //         })
+            //         .catch(function (error) {
+            //             console.error('Error enumerating devices:', error);
+            //         });
+            // } 
+            // else {
+            //     console.error('getUserMedia is not supported in this browser');
+            // }
+
+            function captureAndDownloadFrame() {
+                captureCanvas.width = video.videoWidth;
+                captureCanvas.height = video.videoHeight;
+                captureCanvas.getContext('2d').drawImage(video, 0, 0, video.videoWidth, video.videoHeight);
+                const downloadLink = document.createElement('a');
+                downloadLink.href = captureCanvas.toDataURL('image/jpeg');
+                downloadLink.download = 'captured_frame.jpg';
+                downloadLink.click();
+                setTimeout(sendCapturedFrameToPython, 3000);
+            }
+            captureButton.addEventListener('click', function () {
+                captureAndDownloadFrame();
+            });
+
+        </script>
+    </body>
+</html>
